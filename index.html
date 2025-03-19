@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/vue.js"></script>
+    <script defer src="js/main.js"></script>
+    <title>To-Do List</title>
+</head>
+<body>
+    <div id="app">
+        <button id="modal-button" @click="modalOpen" :class="{ disabled: column1.length >= 3 }">Создать карточку</button>
+        <card-create :is-modal-open="isModalOpen" :column1="column1" :column2="column2"
+                     :column3="column3" :column4="column4" @add-card="addCard" @modal-close="modalClose"></card-create>
+        <to-do-list :column1="column1" :column2="column2" :column3="column3" :column4="column4"
+                    @move-to-column1="moveToColumn1" @move-to-column2="moveToColumn2"
+                    @move-to-column3="moveToColumn3"></to-do-list>
+    </div>
+</body>
+</html>
