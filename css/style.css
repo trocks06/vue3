@@ -50,6 +50,12 @@
     flex-direction: column;
     gap: 20px;
 }
+.card-footer {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .card-info {
     display: flex;
     flex-direction: column;
