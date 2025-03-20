@@ -62,10 +62,12 @@ Vue.component('to-do-list', {
                         <h4>Дата редактирования</h4>
                         <p>{{ card.editedData }}</p>
                     </div>
-                    <div v-if="card.reasonForReturn" class="card-info">
-                        <h4>Причина возврата</h4>
-                        <p>{{ card.reasonForReturn }}</p>
-                    </div>    
+                    <div class="card-info" v-if="card.reasonsForReturn.length != 0">
+                        <h4>Причины возврата</h4>
+                        <ul class="no-marker">
+                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn">{{ reason }}</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button @click="modalEditOpen(card, index, 'column2')" class="card-button">Редактировать</button>
@@ -97,6 +99,12 @@ Vue.component('to-do-list', {
                         <h4>Дата редактирования</h4>
                         <p>{{ card.editedData }}</p>
                     </div>
+                    <div class="card-info" v-if="card.reasonsForReturn.length != 0">
+                        <h4>Причины возврата</h4>
+                        <ul class="no-marker">
+                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn">{{ reason }}</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button @click="modalEditOpen(card, index, 'column3')" class="card-button">Редактировать</button>
@@ -126,9 +134,15 @@ Vue.component('to-do-list', {
                         <h4>Дата выполнения</h4>
                         <p>{{ card.completedData }}</p>
                     </div>
+                    <div class="card-info" v-if="card.reasonsForReturn.length != 0">
+                        <h4>Причины возврата</h4>
+                        <ul class="no-marker">
+                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn">{{ reason }}</li>
+                        </ul>
+                    </div>
                     <div class="card-info">
                         <h4>Статус</h4>
-                        <p v-if="card.isOverdue === 'true'">Просрочена</p>
+                        <p v-if="card.isOverdue === true">Просрочена</p>
                         <p v-else>Выполнена в срок</p>
                     </div>
                 </div>
@@ -196,6 +210,7 @@ Vue.component('card-create', {
             deadline: '',
             editedData: '',
             completedData: '',
+            reasonsForReturn: [],
             reasonForReturn: '',
             isOverdue: '',
             errors: [],
@@ -228,6 +243,7 @@ Vue.component('card-create', {
                     editedData: this.editedData,
                     completedData: this.completedData,
                     reasonForReturn: this.reasonForReturn,
+                    reasonsForReturn: this.reasonsForReturn,
                     isOverdue: this.isOverdue,
                 };
                 this.$emit('add-card', card);
@@ -370,10 +386,12 @@ Vue.component('reason-for-return', {
                 this.errors.push("Напишите причину возврата");
             } else {
                 this.card = this.currentCard
-                this.card.reasonForReturn = this.reasonForReturn;
+                this.card.reasonsForReturn.push(this.reasonForReturn)
                 this.$emit('add-reason-for-return', this.card, this.currentIndex);
+                this.reasonForReturn = '';
                 this.closeReasonForReturn();
             }
+            this.reasonForReturn = '';
         },
         closeReasonForReturn() {
             this.$emit('close-reason-for-return');
@@ -450,8 +468,9 @@ let app = new Vue({
                 this.column3.push(card);
             } else if (column === 'column3') {
                 this.column3.splice(index, 1)
+                let completeData = new Date();
                 card.completedData = new Date().toLocaleString()
-                this.column4.push(this.checkDeadline(card));
+                this.column4.push(this.checkDeadline(card, completeData));
             }
             this.saveColumnData();
         },
@@ -464,10 +483,12 @@ let app = new Vue({
             this.column3.splice(index, 1)
             this.column2.push(card);
         },
-        checkDeadline(card) {
+        checkDeadline(card, completeData) {
             const deadlineDate = new Date(card.deadline);
-            const completionDate = new Date(card.completedData);
-            card.isOverdue = completionDate < deadlineDate;
+            const completionDate = new Date(completeData);
+            console.log(deadlineDate)
+            console.log(completionDate)
+            card.isOverdue = completionDate > deadlineDate;
             return card;
         },
         saveColumnData() {
