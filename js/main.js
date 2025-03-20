@@ -206,7 +206,7 @@ Vue.component('card-create', {
                 <input id="deadline"  type="date" placeholder="Срок" v-model="deadline">
             </div>
             <div class="form-div">
-                <label for="role">Срок выполнения</label>
+                <label for="role">Роль</label>
                 <select id="role" v-model="role">
                     <option>Фронтэнд-разработчик</option>
                     <option>Бэкэнд-разработчик</option>
@@ -316,6 +316,16 @@ Vue.component('card-edit', {
                 <label for="deadline">Срок выполнения</label>
                 <input id="deadline"  type="date" placeholder="Срок" v-model="deadline">
             </div>
+            <div class="form-div">
+                <label for="role">Роль</label>
+                <select id="role" v-model="role">
+                    <option>Фронтэнд-разработчик</option>
+                    <option>Бэкэнд-разработчик</option>
+                    <option>Дизайнер</option>
+                    <option>Тестировщик</option>
+                    <option>Аналитик</option>
+                </select>
+            </div>
             <div class="form-div-buttons">
                 <input type="submit" value="Редактировать">
                 <button class="modal-close-button" type="button" @click="closeEditModal">Закрыть</button>
@@ -328,6 +338,7 @@ Vue.component('card-edit', {
             name: this.currentCard.name || '',
             task: this.currentCard.task || '',
             deadline: this.currentCard.deadline || '',
+            role: this.currentCard.role || '',
             card: {},
             errors: []
         }
@@ -339,6 +350,7 @@ Vue.component('card-edit', {
                 this.name = newCard.name || '';
                 this.task = newCard.task || '';
                 this.deadline = newCard.deadline || '';
+                this.role = newCard.role || '';
             }
         }
     },
@@ -359,11 +371,15 @@ Vue.component('card-edit', {
             if (!this.deadline) {
                 this.errors.push("Добавьте дедлайн");
             }
-            if (this.name && this.task && this.deadline) {
+            if (!this.role) {
+                this.errors.push("Добавьте роль");
+            }
+            if (this.name && this.task && this.deadline && this.role) {
                 this.card.name = this.name;
                 this.card.task = this.task;
                 this.card.editedData = new Date().toLocaleString();
                 this.card.deadline = this.deadline;
+                this.card.role = this.role;
                 this.$emit('edit-card', this.card, this.currentIndex);
                 this.closeEditModal();
             }

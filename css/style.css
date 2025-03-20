@@ -120,7 +120,7 @@ h2 {
     text-align: center;
     color: white;
 }
-input, .modal-close-button {
+input, .modal-close-button, select {
     font-size: 24px;
     margin: 0 auto;
     padding: 5px;
