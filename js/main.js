@@ -26,7 +26,11 @@ Vue.component('to-do-list', {
                     <div class="card-info">
                         <h4>Срок выполнения</h4>
                         <p>{{ card.deadline }}</p>
-                    </div>                 
+                    </div>
+                    <div class="card-info">
+                        <h4>Роль</h4>
+                        <p>{{ card.role }}</p>
+                    </div>     
                     <div v-if="card.editedData" class="card-info">
                         <h4>Дата редактирования</h4>
                         <p>{{ card.editedData }}</p>
@@ -58,6 +62,10 @@ Vue.component('to-do-list', {
                         <h4>Срок выполнения</h4>
                         <p>{{ card.deadline }}</p>
                     </div>    
+                    <div class="card-info">
+                        <h4>Роль</h4>
+                        <p>{{ card.role }}</p>
+                    </div>    
                     <div v-if="card.editedData" class="card-info">
                         <h4>Дата редактирования</h4>
                         <p>{{ card.editedData }}</p>
@@ -69,9 +77,6 @@ Vue.component('to-do-list', {
                         </ul>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button @click="modalEditOpen(card, index, 'column2')" class="card-button">Редактировать</button>
-                </div>     
             </div>
         </div>
         <div class="column third-column">
@@ -95,6 +100,10 @@ Vue.component('to-do-list', {
                         <h4>Срок выполнения</h4>
                         <p>{{ card.deadline }}</p>
                     </div>
+                    <div class="card-info">
+                        <h4>Роль</h4>
+                        <p>{{ card.role }}</p>
+                    </div>    
                     <div v-if="card.editedData" class="card-info">
                         <h4>Дата редактирования</h4>
                         <p>{{ card.editedData }}</p>
@@ -106,9 +115,6 @@ Vue.component('to-do-list', {
                         </ul>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button @click="modalEditOpen(card, index, 'column3')" class="card-button">Редактировать</button>
-                </div>    
             </div>
         </div>
         <div class="column fourth-column">
@@ -129,7 +135,11 @@ Vue.component('to-do-list', {
                     <div class="card-info">
                         <h4>Срок выполнения</h4>
                         <p>{{ card.deadline }}</p>
-                    </div>      
+                    </div>
+                    <div class="card-info">
+                        <h4>Роль</h4>
+                        <p>{{ card.role }}</p>
+                    </div>    
                     <div class="card-info">
                         <h4>Дата выполнения</h4>
                         <p>{{ card.completedData }}</p>
@@ -195,6 +205,16 @@ Vue.component('card-create', {
                 <label for="deadline">Срок выполнения</label>
                 <input id="deadline"  type="date" placeholder="Срок" v-model="deadline">
             </div>
+            <div class="form-div">
+                <label for="role">Срок выполнения</label>
+                <select id="role" v-model="role">
+                    <option>Фронтэнд</option>
+                    <option>Бэкэнд</option>
+                    <option>Дизайн</option>
+                    <option>Тестирование</option>
+                    <option>Аналитика</option>
+                </select>
+            </div>
             <div class="form-div-buttons">
                 <input type="submit" value="Создать">
                 <button class="modal-close-button" type="button" @click="closeModal">Закрыть</button>
@@ -212,6 +232,7 @@ Vue.component('card-create', {
             completedData: '',
             reasonsForReturn: [],
             reasonForReturn: '',
+            role: '',
             isOverdue: '',
             errors: [],
         }
@@ -245,6 +266,7 @@ Vue.component('card-create', {
                     reasonForReturn: this.reasonForReturn,
                     reasonsForReturn: this.reasonsForReturn,
                     isOverdue: this.isOverdue,
+                    role: this.role,
                 };
                 this.$emit('add-card', card);
                 this.closeModal();
@@ -253,6 +275,7 @@ Vue.component('card-create', {
                 this.createdData = '';
                 this.deadline = '';
                 this.reasonsForReturn = []
+                this.role = ''
             }
         },
         closeModal() {
