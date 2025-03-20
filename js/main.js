@@ -65,7 +65,7 @@ Vue.component('to-do-list', {
                     <div class="card-info" v-if="card.reasonsForReturn != ''">
                         <h4>Причины возврата</h4>
                         <ul class="no-marker">
-                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn">{{ reason }}</li>
+                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn" :key="reasonIndex">{{ reason }}</li>
                         </ul>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ Vue.component('to-do-list', {
                     <div class="card-info" v-if="card.reasonsForReturn != ''">
                         <h4>Причины возврата</h4>
                         <ul class="no-marker">
-                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn">{{ reason }}</li>
+                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn" :key="reasonIndex">{{ reason }}</li>
                         </ul>
                     </div>
                 </div>
@@ -137,7 +137,7 @@ Vue.component('to-do-list', {
                     <div class="card-info" v-if="card.reasonsForReturn != ''">
                         <h4>Причины возврата</h4>
                         <ul class="no-marker">
-                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn">{{ reason }}</li>
+                            <li v-for="(reason, reasonIndex) in card.reasonsForReturn" :key="reasonIndex">{{ reason }}</li>
                         </ul>
                     </div>
                     <div class="card-info">
