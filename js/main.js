@@ -250,7 +250,7 @@ Vue.component('card-edit', {
     template: `
     <div v-show="isModalEditOpen" class="modal">
         <form @submit.prevent="saveEditedCard">
-            <legend>Создание карточки</legend>
+            <legend>Редактирование карточки</legend>
             <ul class="errors">
                 <li v-for="error in errors">{{ error }}!!!!!!!</li>
             </ul>
@@ -275,15 +275,22 @@ Vue.component('card-edit', {
     `,
     data() {
         return {
-            name: '',
-            task: '',
-            deadline: '',
+            name: this.currentCard.name || '',
+            task: this.currentCard.task || '',
+            deadline: this.currentCard.deadline || '',
             card: {},
             errors: []
         }
     },
     watch: {
-
+        currentCard: {
+            immediate: true,
+            handler(newCard) {
+                this.name = newCard.name || '';
+                this.task = newCard.task || '';
+                this.deadline = newCard.deadline || '';
+            }
+        }
     },
     methods: {
         saveEditedCard() {
@@ -326,7 +333,7 @@ Vue.component('reason-for-return', {
     template: `
     <div v-show="isReasonForReturnOpen" class="modal">
         <form @submit.prevent="saveReasonForReturn">
-            <legend>Создание карточки</legend>
+            <legend>Причина возврата карточки</legend>
             <ul class="errors">
                 <li v-for="error in errors">{{ error }}!!!!!!!</li>
             </ul>
