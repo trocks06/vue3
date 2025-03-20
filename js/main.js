@@ -252,6 +252,7 @@ Vue.component('card-create', {
                 this.task = '';
                 this.createdData = '';
                 this.deadline = '';
+                this.reasonsForReturn = []
             }
         },
         closeModal() {
