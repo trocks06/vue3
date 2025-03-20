@@ -3,7 +3,8 @@ Vue.component('to-do-list', {
         column1: { type: Array, required: true },
         column2: { type: Array, required: true },
         column3: { type: Array, required: true },
-        column4: { type: Array, required: true }
+        column4: { type: Array, required: true },
+        checkDeadline: { type: Function, required: true },
     },
     template: `
     <div class="main-div">
@@ -96,7 +97,7 @@ Vue.component('to-do-list', {
                     <div v-if="card.editedData" class="card-info">
                         <h4>Дата редактирования</h4>
                         <p>{{ card.editedData }}</p>
-                    </div>                                       
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button @click="modalEditOpen(card, index, 'column3')" class="card-button">Редактировать</button>
@@ -125,6 +126,11 @@ Vue.component('to-do-list', {
                     <div class="card-info">
                         <h4>Дата выполнения</h4>
                         <p>{{ card.completedData }}</p>
+                    </div>
+                    <div class="card-info">
+                        <h4>Статус</h4>
+                        <p v-if="checkDeadline">Просрочена</p>
+                        <p v-else>Выполнена в срок</p>
                     </div>
                 </div>
             </div>
@@ -174,7 +180,7 @@ Vue.component('card-create', {
             </div>
             <div class="form-div">
                 <label for="deadline">Срок выполнения</label>
-                <input id="deadline"  type="text" placeholder="Срок" v-model="deadline">
+                <input id="deadline"  type="date" placeholder="Срок" v-model="deadline">
             </div>
             <div class="form-div-buttons">
                 <input type="submit" value="Создать">
@@ -264,7 +270,7 @@ Vue.component('card-edit', {
             </div>
             <div class="form-div">
                 <label for="deadline">Срок выполнения</label>
-                <input id="deadline"  type="text" placeholder="Срок" v-model="deadline">
+                <input id="deadline"  type="date" placeholder="Срок" v-model="deadline">
             </div>
             <div class="form-div-buttons">
                 <input type="submit" value="Редактировать">
@@ -429,6 +435,8 @@ let app = new Vue({
                 this.column2.splice(index, 1, card);
             } else if (column === 'column3') {
                 this.column3.splice(index, 1, card);
+            } else if (column === 'column4') {
+                this.column4.splice(index, 1, card);
             }
             this.saveColumnData();
         },
@@ -442,6 +450,7 @@ let app = new Vue({
             } else if (column === 'column3') {
                 this.column3.splice(index, 1)
                 card.completedData = new Date().toLocaleString()
+                this.checkDeadline(card);
                 this.column4.push(card);
             }
             this.saveColumnData();
@@ -454,6 +463,11 @@ let app = new Vue({
         moveToLeft(card, index) {
             this.column3.splice(index, 1)
             this.column2.push(card);
+        },
+        checkDeadline(card) {
+            const deadlineDate = new Date(card.deadline);
+            const completionDate = new Date(card.completedData);
+            return completionDate > deadlineDate;
         },
         saveColumnData() {
             localStorage.setItem('column1', JSON.stringify(this.column1));
