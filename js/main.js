@@ -208,11 +208,11 @@ Vue.component('card-create', {
             <div class="form-div">
                 <label for="role">Срок выполнения</label>
                 <select id="role" v-model="role">
-                    <option>Фронтэнд</option>
-                    <option>Бэкэнд</option>
-                    <option>Дизайн</option>
-                    <option>Тестирование</option>
-                    <option>Аналитика</option>
+                    <option>Фронтэнд-разработчик</option>
+                    <option>Бэкэнд-разработчик</option>
+                    <option>Дизайнер</option>
+                    <option>Тестировщик</option>
+                    <option>Аналитик</option>
                 </select>
             </div>
             <div class="form-div-buttons">
@@ -255,7 +255,10 @@ Vue.component('card-create', {
             if (!this.deadline) {
                 this.errors.push("Добавьте дедлайн");
             }
-            if (this.name && this.task && this.deadline) {
+            if (!this.role) {
+                this.errors.push("Добавьте роль");
+            }
+            if (this.name && this.task && this.deadline && this.role) {
                 let card = {
                     name: this.name,
                     task: this.task,
