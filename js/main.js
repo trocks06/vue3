@@ -4,7 +4,6 @@ Vue.component('to-do-list', {
         column2: { type: Array, required: true },
         column3: { type: Array, required: true },
         column4: { type: Array, required: true },
-        checkDeadline: { type: Function, required: true },
     },
     template: `
     <div class="main-div">
@@ -129,7 +128,7 @@ Vue.component('to-do-list', {
                     </div>
                     <div class="card-info">
                         <h4>Статус</h4>
-                        <p v-if="checkDeadline">Просрочена</p>
+                        <p v-if="card.isOverdue === 'true'">Просрочена</p>
                         <p v-else>Выполнена в срок</p>
                     </div>
                 </div>
@@ -198,6 +197,7 @@ Vue.component('card-create', {
             editedData: '',
             completedData: '',
             reasonForReturn: '',
+            isOverdue: '',
             errors: [],
         }
     },
@@ -228,6 +228,7 @@ Vue.component('card-create', {
                     editedData: this.editedData,
                     completedData: this.completedData,
                     reasonForReturn: this.reasonForReturn,
+                    isOverdue: this.isOverdue,
                 };
                 this.$emit('add-card', card);
                 this.closeModal();
@@ -450,8 +451,7 @@ let app = new Vue({
             } else if (column === 'column3') {
                 this.column3.splice(index, 1)
                 card.completedData = new Date().toLocaleString()
-                this.checkDeadline(card);
-                this.column4.push(card);
+                this.column4.push(this.checkDeadline(card));
             }
             this.saveColumnData();
         },
@@ -467,7 +467,8 @@ let app = new Vue({
         checkDeadline(card) {
             const deadlineDate = new Date(card.deadline);
             const completionDate = new Date(card.completedData);
-            return completionDate > deadlineDate;
+            card.isOverdue = completionDate < deadlineDate;
+            return card;
         },
         saveColumnData() {
             localStorage.setItem('column1', JSON.stringify(this.column1));

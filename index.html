@@ -18,7 +18,7 @@
                    :current-card="currentCard" :current-index="currentIndex" @edit-card="updateCard" ></card-edit>
         <reason-for-return :is-reason-for-return-open="isReasonForReturnOpen" @close-reason-for-return="closeReasonForReturn"
                            :current-card="currentCard" :current-index="currentIndex" @add-reason-for-return="addReasonForReturn"></reason-for-return>
-        <to-do-list :column1="column1" :column2="column2" :column3="column3" :column4="column4" :check-deadline="checkDeadline"
+        <to-do-list :column1="column1" :column2="column2" :column3="column3" :column4="column4"
                     @move-to-right="moveToRight" @move-to-left="moveToLeft"
                     @delete-card="deleteCard" @modal-edit-open="modalEditOpen" @open-reason-for-return="openReasonForReturn"></to-do-list>
     </div>
